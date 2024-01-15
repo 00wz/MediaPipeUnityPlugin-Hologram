@@ -71,6 +71,7 @@ namespace Mediapipe.Unity
         {
           center.z = 0.0f;
         }
+        //Debug.Log($"{gameObject.name}: {center}   rect.ToString(): {rect.ToString()}");
         var radius = CalculateRadius(rect, target);
         _circleAnnotation.Draw(center, radius, vertices);
       }
