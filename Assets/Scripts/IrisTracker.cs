@@ -27,7 +27,9 @@ namespace Hologrampipe
       var imageSource = ImageSourceProvider.ImageSource;
       Debug.LogWarning($"imageSource.resolution: {imageSource.resolution}\n" +
         $"imageSource.textureHeight: {imageSource.textureHeight}\n" +
-        $"imageSource.textureWidth: {imageSource.textureWidth}");
+        $"imageSource.textureWidth: {imageSource.textureWidth}" +
+        $"imageSource.rotation: {imageSource.rotation}\n" +
+        $"imageSource.isFrontFacing: {imageSource.isFrontFacing}\n");
       SetupAnnotationController(_faceLandmarksWithIrisAnnotationController, imageSource);
     }
 
@@ -61,8 +63,15 @@ namespace Hologrampipe
 
     private void RefreshEyesPosition(IList<NormalizedLandmark> landmarks)
     {
+      if (landmarks == null)///
+      {
+        return;
+      }
       var (leftLandmarks, rightLandmarks) = PartitionLandmarkList(landmarks);
-
+      var pos = GetLandmarkPositionPx(leftLandmarks[0],
+        ImageSourceProvider.ImageSource.resolution, 500);
+      Debug.DrawLine(Vector3.zero, Vector3.zero +pos, new UnityEngine.Color(0f, 0f, 1.0f), 0f);
+      //Debug.LogWarning($"pos={pos}");
     }
 
     private (IList<NormalizedLandmark> leftIris, IList<NormalizedLandmark> rightIris) PartitionLandmarkList(IList<NormalizedLandmark> landmarks)
@@ -91,5 +100,29 @@ namespace Hologrampipe
 
       return (leftIrisLandmarks, rightIrisLandmarks);
     }
+
+    private Vector3 GetLandmarkPositionPx(NormalizedLandmark normalizedLandmark,
+      ImageSource.ResolutionStruct resolution, float focalLengthPixel)
+    {
+      return new Vector3(
+        (normalizedLandmark.X - 0.5f) * resolution.width,
+        (normalizedLandmark.Y - 0.5f) * resolution.height,
+        focalLengthPixel
+        );
+    }
+    /*
+    private Vector3 GetLandmarkPositionPx(NormalizedLandmark normalizedLandmark, 
+      ImageSource.ResolutionStruct resolution, bool isInverted, bool IsXReversed, bool IsYReversed)
+    {
+      var (nx, ny) = isInverted ?
+        (normalizedLandmark.Y, normalizedLandmark.X) :
+        (normalizedLandmark.X, normalizedLandmark.Y);
+      var x = IsXReversed ? Mathf.LerpUnclamped(xMax, xMin, nx) : Mathf.LerpUnclamped(xMin, xMax, nx);
+      var y = IsYReversed ? Mathf.LerpUnclamped(yMax, yMin, ny) : Mathf.LerpUnclamped(yMin, yMax, ny);
+      var z = zScale * normalizedZ;
+      return new Vector3(x, y, z);
+
+    }
+    */
   }
 }
