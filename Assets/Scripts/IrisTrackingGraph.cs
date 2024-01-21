@@ -3,7 +3,7 @@ using Mediapipe.Unity;
 using System;
 using System.Collections.Generic;
 
-namespace Hologrampipe
+namespace HologramPipe
 {
   public class IrisTrackingGraph : GraphRunner
   {

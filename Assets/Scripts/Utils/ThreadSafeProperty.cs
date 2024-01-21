@@ -1,4 +1,4 @@
-namespace Hologrampipe
+namespace HologramPipe
 {
   public class ThreadSafeProperty<T>
   {
