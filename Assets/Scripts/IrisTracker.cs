@@ -21,7 +21,7 @@ namespace HologramPipe
       private set => _irisPositions.value = value;
     }
 
-    private const float FOCAL_LENGTH_PIXEL = 500f;//TODO: calculate by resolution and ratio of sensor size to focal length
+    public float FocalLengthPixel { get; set; } = 500f;//TODO: calculate by resolution and ratio of sensor size to focal length
     private const float IRIS_SIZE_MM = 11.8f;
     private const int FACE_LANDMARK_COUNT = 468;
     private const int IRIS_LANDMARK_COUNT = 5;
@@ -84,13 +84,13 @@ namespace HologramPipe
       }
 
       var leftIrisPositionPx = GetLandmarkPositionPx(leftLandmarks[0],
-        ImageSourceProvider.ImageSource.resolution, FOCAL_LENGTH_PIXEL);
+        ImageSourceProvider.ImageSource.resolution, FocalLengthPixel);
       var leftIrisDiameterPx = CalculateIrisDiameterPx(ImageSourceProvider.ImageSource.resolution,
         leftLandmarks);
       var leftIrisPositionMM = leftIrisPositionPx / leftIrisDiameterPx * IRIS_SIZE_MM;
 
       var rightIrisPositionPx = GetLandmarkPositionPx(rightLandmarks[0],
-        ImageSourceProvider.ImageSource.resolution, FOCAL_LENGTH_PIXEL);
+        ImageSourceProvider.ImageSource.resolution, FocalLengthPixel);
       var rightIrisDiameterPx = CalculateIrisDiameterPx(ImageSourceProvider.ImageSource.resolution,
         rightLandmarks);
       var rightIrisPositionMM = rightIrisPositionPx / rightIrisDiameterPx * IRIS_SIZE_MM;
