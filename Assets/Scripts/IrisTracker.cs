@@ -65,7 +65,7 @@ namespace HologramPipe
       }
 
       _faceLandmarksWithIrisAnnotationController.DrawNow(faceLandmarksWithIris);
-      RefreshEyesPosition(faceLandmarksWithIris.Landmark);
+      RefreshEyesPosition(faceLandmarksWithIris?.Landmark);
     }
 
     private void OnFaceLandmarksWithIrisOutput(object stream, OutputEventArgs<NormalizedLandmarkList> eventArgs)
