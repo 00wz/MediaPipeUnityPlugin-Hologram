@@ -44,9 +44,9 @@ namespace HologramPipe
 
       }
 
-      var current = GyroToUnity(Input.gyro.attitude);
-      Quaternion deltaRotate = QuaternionDiff(current, lastValidGyro);
-      Vector3 virtualFacePosition = deltaRotate * lastSelectedDirection;
+      var current = Input.gyro.attitude;
+      Quaternion deltaRotate = QuaternionDiff(lastValidGyro, current);
+      Vector3 virtualFacePosition = FrontalCameraGyroToUnity(deltaRotate) * lastSelectedDirection;
 
       GyroscopeDirection.transform.LookAt(GyroscopeDirection.transform.position +
         transform.TransformVector(virtualFacePosition));
@@ -57,6 +57,11 @@ namespace HologramPipe
       return new Quaternion(q.x, q.y, -q.z, -q.w);
     }
 
+    private Quaternion FrontalCameraGyroToUnity(Quaternion q)
+    {
+      return new Quaternion(-q.x, q.y, q.z, -q.w);
+    }
+
     private Quaternion QuaternionDiff(Quaternion srs, Quaternion delta)
     {
       return Quaternion.Inverse(delta) * srs;
@@ -64,7 +69,7 @@ namespace HologramPipe
 
     public void SelectDirection()
     {
-      lastValidGyro = GyroToUnity(Input.gyro.attitude);
+      lastValidGyro = Input.gyro.attitude;
       lastSelectedDirection = lastValidFacePositionInRelationToCamera;
     }
   }

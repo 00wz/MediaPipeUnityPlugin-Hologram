@@ -21,7 +21,7 @@ namespace HologramPipe
       private set => _irisPositions.value = value;
     }
 
-    public float FocalLengthPixel { get; set; } = 500f;//TODO: calculate by resolution and ratio of sensor size to focal length
+    public float FocalLengthPixel { get; set; } = 1050f;//TODO: calculate by resolution and ratio of sensor size to focal length
     private const float IRIS_SIZE_MM = 11.8f;
     private const int FACE_LANDMARK_COUNT = 468;
     private const int IRIS_LANDMARK_COUNT = 5;
