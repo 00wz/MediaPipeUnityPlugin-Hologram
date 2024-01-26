@@ -38,7 +38,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/MediaPipeUnity/Samples/Scenes/MediaPipe Video/MediaPipe Video.unity
     guid: 16062faf4cda54140b781b925351b119
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test.unity
     guid: f7422b962c84965459dbc198c6b44895
+  - enabled: 1
+    path: Assets/Scenes/Hologram.unity
+    guid: b3e04e1eeef5cfa45b816b943c0c8745
   m_configObjects: {}
