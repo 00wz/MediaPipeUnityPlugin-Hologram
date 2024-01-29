@@ -30,6 +30,18 @@ namespace HologramPipe
     private const int RIGHT_IRIS_LANDMARKS_FIRST_INDEX = LEFT_IRIS_LANDMARKS_FIRST_INDEX + IRIS_LANDMARK_COUNT;
     private const int RIGHT_IRIS_LANDMARKS_OUT_INDEX = RIGHT_IRIS_LANDMARKS_FIRST_INDEX + IRIS_LANDMARK_COUNT;
 
+    public void SetTrackerActive(bool value)
+    {
+      if(value)
+      {
+        Play();
+      }
+      else
+      {
+        Stop();
+      }
+    }
+      
     protected override void OnStartRun()
     {
       if (!runningMode.IsSynchronous())
@@ -38,11 +50,11 @@ namespace HologramPipe
       }
 
       var imageSource = ImageSourceProvider.ImageSource;
-      Debug.LogWarning($"imageSource.resolution: {imageSource.resolution}\n" +
+      /*Debug.LogWarning($"imageSource.resolution: {imageSource.resolution}\n" +
         $"imageSource.textureHeight: {imageSource.textureHeight}\n" +
         $"imageSource.textureWidth: {imageSource.textureWidth}" +
         $"imageSource.rotation: {imageSource.rotation}\n" +
-        $"imageSource.isFrontFacing: {imageSource.isFrontFacing}\n");
+        $"imageSource.isFrontFacing: {imageSource.isFrontFacing}\n");*/
       SetupAnnotationController(_faceLandmarksWithIrisAnnotationController, imageSource);
     }
 
