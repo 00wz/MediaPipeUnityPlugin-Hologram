@@ -6,5 +6,6 @@ namespace HologramPipe
   {
     public Vector3 LeftIrisPositionMM;
     public Vector3 RightIrisPositionMM;
+    public Quaternion Attitude;
   }
 }

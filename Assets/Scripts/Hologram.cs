@@ -50,11 +50,9 @@ namespace HologramPipe
 
         _lastValidEyePositionRelationFrontCameraUnit = eyePositionRelationFrontCameraMM
           * _unitToMillimeterRatio;
-        _lastValidGyro = Input.gyro.attitude;
-
-        Camera.position = FrontCameraPosition.TransformPoint(_lastValidEyePositionRelationFrontCameraUnit);
+        _lastValidGyro = IrisTracker.IrisPositions.Value.Attitude;
       }
-      else
+
       if (_gyroCorrectionActive)
       {
         var currentGyro = Input.gyro.attitude;
@@ -63,6 +61,10 @@ namespace HologramPipe
           FrontalCameraGyroToUnity(deltaRotate) * _lastValidEyePositionRelationFrontCameraUnit;
 
         Camera.position = FrontCameraPosition.TransformPoint(virtualEyePositionRelationFrontCameraUnit);
+      }
+      else
+      {
+        Camera.position = FrontCameraPosition.TransformPoint(_lastValidEyePositionRelationFrontCameraUnit);
       }
     }
 
