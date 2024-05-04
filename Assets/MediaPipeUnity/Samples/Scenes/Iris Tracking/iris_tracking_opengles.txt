@@ -29,6 +29,16 @@ output_stream: "face_landmarks_with_iris"
 output_stream: "face_rect"
 output_stream: "face_detections"
 
+node {
+  calculator: "ConstantSidePacketCalculator"
+  output_side_packet: "PACKET:use_prev_landmarks"
+  node_options: {
+    [type.googleapis.com/mediapipe.ConstantSidePacketCalculatorOptions]: {
+      packet { bool_value: false }
+    }
+  }
+}
+
 # Throttles the images flowing downstream for flow control. It passes through
 # the very first incoming image unaltered, and waits for downstream nodes
 # (calculators and subgraphs) in the graph to finish their tasks before it
@@ -76,6 +86,7 @@ node {
   calculator: "FaceLandmarkFrontGpu"
   input_stream: "IMAGE:transformed_input_video"
   input_side_packet: "NUM_FACES:num_faces"
+  input_side_packet: "USE_PREV_LANDMARKS:use_prev_landmarks"
   output_stream: "LANDMARKS:multi_face_landmarks"
   output_stream: "ROIS_FROM_LANDMARKS:face_rects_from_landmarks"
   output_stream: "DETECTIONS:face_detections"
