@@ -200,8 +200,19 @@ namespace Mediapipe.Unity
       }
 
       InitializeWebCamTexture();
+      /*Logger.LogVerbose("webCamTexture.requestedFPS: " + webCamTexture.requestedFPS);
+      Logger.LogVerbose("webCamTexture.requestedFPS = 1f / Input.gyro.updateInterval");
+      webCamTexture.requestedFPS = 1f / Input.gyro.updateInterval;
+      Logger.LogVerbose("webCamTexture.requestedFPS: " + webCamTexture.requestedFPS);*/
       webCamTexture.Play();
+      //Logger.LogVerbose("webCamTexture.requestedFPS: " + webCamTexture.requestedFPS);
       yield return WaitForWebCamTexture();
+    }
+
+    public void Toggle0Or999CameraRate(bool cameraRateIs999)
+    {
+      webCamTexture.requestedFPS = cameraRateIs999 ? 999f : 0f;
+      Logger.LogVerbose("webCamTexture.requestedFPS: " + webCamTexture.requestedFPS);
     }
 
     public override IEnumerator Resume()

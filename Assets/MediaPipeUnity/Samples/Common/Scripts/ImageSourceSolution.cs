@@ -94,6 +94,7 @@ namespace Mediapipe.Unity
 
         if (!textureFramePool.TryGetTextureFrame(out var textureFrame))
         {
+          Logger.LogWarning("!textureFramePool.TryGetTextureFrame(out var textureFrame)");
           yield return new WaitForEndOfFrame();
           continue;
         }
@@ -101,12 +102,15 @@ namespace Mediapipe.Unity
         // Copy current image to TextureFrame
         ReadFromImageSource(imageSource, textureFrame);
         AddTextureFrameToInputStream(textureFrame);
-        yield return new WaitForEndOfFrame();
 
         if (runningMode.IsSynchronous())
         {
           RenderCurrentFrame(textureFrame);
           yield return WaitForNextValue();
+        }
+        else
+        {
+          yield return new WaitForEndOfFrame();
         }
       }
     }

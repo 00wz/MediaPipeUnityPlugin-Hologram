@@ -11,6 +11,7 @@ namespace HologramPipe
   {
     [SerializeField] private FaceLandmarkListAnnotationController _faceLandmarksWithIrisAnnotationController;
     [SerializeField] private Text _queueLength;
+    [SerializeField] private Text _calculationTimeText;
 
     private ThreadSafeProperty<IrisPositionStruct?> _irisPositions = new();
 
@@ -35,6 +36,15 @@ namespace HologramPipe
 
     private Queue<Quaternion> _quaternions = new();
     //private Quaternion _lastInputStreamAttitude;
+    private float _lastCalculationFrameTime = 0f;
+    private float _calculationTimeInteval;
+
+    private void RefreshComputeTimeInteval()
+    {
+      _calculationTimeInteval = Time.realtimeSinceStartup - _lastCalculationFrameTime;
+      _lastCalculationFrameTime = Time.realtimeSinceStartup;
+      _calculationTimeText.text = _calculationTimeInteval.ToString();
+    }
 
     public void SetTrackerActive(bool value)
     {
@@ -86,6 +96,7 @@ namespace HologramPipe
 
       _faceLandmarksWithIrisAnnotationController.DrawNow(faceLandmarksWithIris);
       RefreshEyesPosition(faceLandmarksWithIris?.Landmark);
+      RefreshComputeTimeInteval();
     }
 
     private void OnFaceLandmarksWithIrisOutput(object stream, OutputEventArgs<NormalizedLandmarkList> eventArgs)
