@@ -10,8 +10,9 @@ namespace HologramPipe
   public class IrisTracker : ImageSourceSolution<IrisTrackingGraph>
   {
     [SerializeField] private FaceLandmarkListAnnotationController _faceLandmarksWithIrisAnnotationController;
-    [SerializeField] private Text _queueLength;
+    //[SerializeField] private Text _queueLength;
     [SerializeField] private Text _calculationTimeText;
+    [SerializeField] private PreviousGyroReading _previousGyroReading;
 
     private ThreadSafeProperty<IrisPositionStruct?> _irisPositions = new();
 
@@ -34,8 +35,8 @@ namespace HologramPipe
     private const int RIGHT_IRIS_LANDMARKS_FIRST_INDEX = LEFT_IRIS_LANDMARKS_FIRST_INDEX + IRIS_LANDMARK_COUNT;
     private const int RIGHT_IRIS_LANDMARKS_OUT_INDEX = RIGHT_IRIS_LANDMARKS_FIRST_INDEX + IRIS_LANDMARK_COUNT;
 
-    private Queue<Quaternion> _quaternions = new();
-    //private Quaternion _lastInputStreamAttitude;
+    //private Queue<Quaternion> _quaternions = new();
+    private Quaternion _lastInputStreamAttitude;
     private float _lastCalculationFrameTime = 0f;
     private float _calculationTimeInteval;
 
@@ -76,8 +77,8 @@ namespace HologramPipe
 
     protected override void AddTextureFrameToInputStream(TextureFrame textureFrame)
     {
-      _quaternions.Enqueue(Input.gyro.attitude);
-      //_lastInputStreamAttitude = Input.gyro.attitude;
+      //_quaternions.Enqueue(Input.gyro.attitude);
+      _lastInputStreamAttitude = _previousGyroReading.GetPreviousGyroReading();
       graphRunner.AddTextureFrameToInputStream(textureFrame);
     }
 
@@ -110,7 +111,7 @@ namespace HologramPipe
       if (landmarks == null ||
         !TryPartitionLandmarkList(landmarks, out var rightLandmarks, out var leftLandmarks))
       {
-        _quaternions.Dequeue();
+        //_quaternions.Dequeue();
         IrisPositions = null;
         return;
       }
@@ -131,8 +132,8 @@ namespace HologramPipe
       {
         LeftIrisPositionMM = leftIrisPositionMM,
         RightIrisPositionMM = rightIrisPositionMM,
-        Attitude = _quaternions.Dequeue()
-        //Attitude = _lastInputStreamAttitude
+        //Attitude = _quaternions.Dequeue()
+        Attitude = _lastInputStreamAttitude
       };
     }
 
@@ -199,9 +200,10 @@ namespace HologramPipe
 
     }
     */
+    /*
     private void Update()
     {
       _queueLength.text = _quaternions.Count.ToString();
-    }
+    }*/
   }
 }
