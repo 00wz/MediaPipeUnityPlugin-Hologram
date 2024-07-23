@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace HologramPipe
 {
@@ -14,8 +15,10 @@ namespace HologramPipe
     private Transform CenterOfScreenPosition;
     [SerializeField]
     private Transform Camera;
+    //[SerializeField]
+    //private Text DeltaRotText;
 
-    private Vector3 _lastValidEyePositionRelationProjectionPlane = Vector3.back * 100;
+    private Vector3 _lastValidEyePositionRelationProjectionPlane = Vector3.back * 200f;
     private Quaternion _lastValidGyro = Quaternion.identity;
 
     private bool _gyroCorrectionActive = false;
@@ -65,6 +68,7 @@ namespace HologramPipe
           GyroToUnity(deltaRotate) * _lastValidEyePositionRelationProjectionPlane;
 
         //Camera.position = FrontCameraPosition.TransformPoint(virtualEyePositionRelationFrontCameraUnit);
+        //DeltaRotText.text = deltaRotate.eulerAngles.ToString();
       }
       else
       {
@@ -91,6 +95,7 @@ namespace HologramPipe
     private Quaternion QuaternionDiff(Quaternion srs, Quaternion delta)
     {
       return Quaternion.Inverse(delta) * srs;
+      //return srs * Quaternion.Inverse(delta);
     }
   }
 }

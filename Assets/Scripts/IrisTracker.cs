@@ -25,7 +25,7 @@ namespace HologramPipe
       private set => _irisPositions.value = value;
     }
 
-    public float FocalLengthPixel { get; set; } = 1040f;//TODO: calculate by resolution and ratio of sensor size to focal length
+    public float FocalLengthPixel { get; set; } = 938f;//1040f;//TODO: calculate by resolution and ratio of sensor size to focal length
     
     private const float IRIS_SIZE_MM = 11.8f;
     private const int FACE_LANDMARK_COUNT = 468;
@@ -78,7 +78,7 @@ namespace HologramPipe
     protected override void AddTextureFrameToInputStream(TextureFrame textureFrame)
     {
       //_quaternions.Enqueue(Input.gyro.attitude);
-      _lastInputStreamAttitude = _previousGyroReading.GetPreviousGyroReading();
+      _lastInputStreamAttitude =  _previousGyroReading.GetPreviousGyroReading();
       graphRunner.AddTextureFrameToInputStream(textureFrame);
     }
 
