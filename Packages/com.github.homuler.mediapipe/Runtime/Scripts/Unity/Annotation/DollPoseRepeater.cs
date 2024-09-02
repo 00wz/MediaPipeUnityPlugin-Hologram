@@ -14,14 +14,22 @@ public class DollPoseRepeater : MonoBehaviour
 
   [SerializeField] private bool IsEnable = true;
 
+  private IList<Landmark> targets;
+
   public void HandlePose(IList<Landmark> targets)
+  {
+    this.targets = targets;
+    //RepeatHandsPositions();
+  }
+
+  private void RepeatHandsPositions()
   {
     if (targets == null)
     {
       return;
     }
 
-    if(!IsEnable)
+    if (!IsEnable)
     {
       return;
     }
@@ -49,24 +57,11 @@ public class DollPoseRepeater : MonoBehaviour
     Vector3 rightForeArmDownDir = Vector3.Cross(rightForeArmDir, rightHandThumbDir);
 
     rightForeArm.rotation = Quaternion.LookRotation(rightForeArmDownDir, rightForeArmDir);
+  }
 
-
-    /*
-    Debug.DrawLine(leftArm.position, leftArm.position + leftArmDir * 999f);
-    Debug.DrawLine(leftArm.position, leftArm.position + leftForeArmDir * 999f, UnityEngine.Color.red);
-    Debug.DrawLine(leftArm.position, leftArm.position + leftArmDownDir * 999f, UnityEngine.Color.blue);
-    */
-    /*
-    Debug.DrawLine(targets[12].ToVector(), targets[11].ToVector());
-    Debug.DrawLine(targets[11].ToVector(), targets[23].ToVector());
-    Debug.DrawLine(targets[11].ToVector(), targets[13].ToVector());
-    Debug.DrawLine(Vector3.zero, targets[13].ToVector() - targets[11].ToVector(), UnityEngine.Color.red);
-    Debug.DrawLine(Vector3.zero, leftArmDir, UnityEngine.Color.blue);
-    Debug.DrawLine(targets[12].ToVector(), targets[24].ToVector());
-    Debug.DrawLine(targets[24].ToVector(), targets[23].ToVector());
-    Debug.DrawLine(targets[13].ToVector(), targets[15].ToVector());
-    Debug.DrawLine(targets[12].ToVector(), targets[11].ToVector());
-    */
+  private void LateUpdate()
+  {
+    RepeatHandsPositions();
   }
 }
 
