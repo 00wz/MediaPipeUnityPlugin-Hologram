@@ -14,6 +14,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
   //[SerializeField] private MaskAnnotationController _segmentationMaskAnnotationController;
   //[SerializeField] private NormalizedRectAnnotationController _roiFromLandmarksAnnotationController;
   [SerializeField] private PoseLandmarkListAnnotationController _poseLandmarksAnnotationController;
+  [SerializeField] private MultiHandLandmarkListAnnotationController _handLandmarksAnnotationController;
 
   public PoseHandTrackingGraph.ModelComplexity modelComplexity
   {
@@ -32,7 +33,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     get => graphRunner.smoothLandmarks;
     set => graphRunner.smoothLandmarks = value;
   }
-
+/*
   public bool enableSegmentation
   {
     get => graphRunner.enableSegmentation;
@@ -44,7 +45,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     get => graphRunner.smoothSegmentation;
     set => graphRunner.smoothSegmentation = value;
   }
-
+*/
   public float minDetectionConfidence
   {
     get => graphRunner.minDetectionConfidence;
@@ -73,6 +74,8 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
       //graphRunner.OnSegmentationMaskOutput += OnSegmentationMaskOutput;
       //graphRunner.OnRoiFromLandmarksOutput += OnRoiFromLandmarksOutput;
       graphRunner.OnHandWorldLandmarksOutput += OnHandWorldLandmarksOutput;
+      graphRunner.OnHandednessOutput += OnHandednessOutput;
+      graphRunner.OnHandLandmarksOutput += OnHandLandmarksOutput;
     }
 
     var imageSource = ImageSourceProvider.ImageSource;
@@ -82,6 +85,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     //SetupAnnotationController(_segmentationMaskAnnotationController, imageSource);
     //_segmentationMaskAnnotationController.InitScreen(imageSource.textureWidth, imageSource.textureHeight);
     //SetupAnnotationController(_roiFromLandmarksAnnotationController, imageSource);
+    SetupAnnotationController(_handLandmarksAnnotationController, imageSource, true);
   }
 
   protected override void AddTextureFrameToInputStream(TextureFrame textureFrame)
@@ -97,14 +101,19 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     //ImageFrame segmentationMask = null;
     //NormalizedRect roiFromLandmarks = null;
     List<LandmarkList> handWorldLandmarks = null;
+    List<NormalizedLandmarkList> handLandmarks = null;
+    List<ClassificationList> handedness = null;
 
     if (runningMode == RunningMode.Sync)
     {
-      var _ = graphRunner.TryGetNext(out poseWorldLandmarks, out poseLandmarks, out handWorldLandmarks, true);
+      var _ = graphRunner.TryGetNext(out poseWorldLandmarks, out poseLandmarks, out handWorldLandmarks, 
+        out handLandmarks, out handedness, true);
     }
     else if (runningMode == RunningMode.NonBlockingSync)
     {
-      yield return new WaitUntil(() => graphRunner.TryGetNext(out poseWorldLandmarks, out poseLandmarks, out handWorldLandmarks, false));
+      yield return new WaitUntil(() => 
+      graphRunner.TryGetNext(out poseWorldLandmarks, out poseLandmarks, out handWorldLandmarks,
+        out handLandmarks, out handedness, false));
     }
 
     //_poseDetectionAnnotationController.DrawNow(poseDetection);
@@ -112,6 +121,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     _poseWorldLandmarksAnnotationController.DrawNow(poseWorldLandmarks);
     //_segmentationMaskAnnotationController.DrawNow(segmentationMask);
     //_roiFromLandmarksAnnotationController.DrawNow(roiFromLandmarks);
+    _handLandmarksAnnotationController.DrawNow(handLandmarks, handedness);
   }
 
   private void OnPoseWorldLandmarksOutput(object stream, OutputEventArgs<LandmarkList> eventArgs)
@@ -127,5 +137,15 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
   private void OnHandWorldLandmarksOutput(object stream, OutputEventArgs<List<LandmarkList>> eventArgs)
   {
 
+  }
+
+  private void OnHandLandmarksOutput(object sender, OutputEventArgs<List<NormalizedLandmarkList>> eventArgs)
+  {
+    _handLandmarksAnnotationController.DrawLater(eventArgs.value);
+  }
+
+  private void OnHandednessOutput(object sender, OutputEventArgs<List<ClassificationList>> eventArgs)
+  {
+    _handLandmarksAnnotationController.DrawLater(eventArgs.value);
   }
 }
