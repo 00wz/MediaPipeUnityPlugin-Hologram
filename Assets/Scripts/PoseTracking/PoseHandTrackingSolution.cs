@@ -13,6 +13,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
   [SerializeField] private PoseWorldLandmarkListAnnotationController _poseWorldLandmarksAnnotationController;
   //[SerializeField] private MaskAnnotationController _segmentationMaskAnnotationController;
   //[SerializeField] private NormalizedRectAnnotationController _roiFromLandmarksAnnotationController;
+  [SerializeField] private PoseLandmarkListAnnotationController _poseLandmarksAnnotationController;
 
   public PoseHandTrackingGraph.ModelComplexity modelComplexity
   {
@@ -67,7 +68,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     if (!runningMode.IsSynchronous())
     {
       //graphRunner.OnPoseDetectionOutput += OnPoseDetectionOutput;
-      //graphRunner.OnPoseLandmarksOutput += OnPoseLandmarksOutput;
+      graphRunner.OnPoseLandmarksOutput += OnPoseLandmarksOutput;
       graphRunner.OnPoseWorldLandmarksOutput += OnPoseWorldLandmarksOutput;
       //graphRunner.OnSegmentationMaskOutput += OnSegmentationMaskOutput;
       //graphRunner.OnRoiFromLandmarksOutput += OnRoiFromLandmarksOutput;
@@ -76,7 +77,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
 
     var imageSource = ImageSourceProvider.ImageSource;
     //SetupAnnotationController(_poseDetectionAnnotationController, imageSource);
-    //SetupAnnotationController(_poseLandmarksAnnotationController, imageSource);
+    SetupAnnotationController(_poseLandmarksAnnotationController, imageSource);
     SetupAnnotationController(_poseWorldLandmarksAnnotationController, imageSource);
     //SetupAnnotationController(_segmentationMaskAnnotationController, imageSource);
     //_segmentationMaskAnnotationController.InitScreen(imageSource.textureWidth, imageSource.textureHeight);
@@ -91,7 +92,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
   protected override IEnumerator WaitForNextValue()
   {
     //Detection poseDetection = null;
-    //NormalizedLandmarkList poseLandmarks = null;
+    NormalizedLandmarkList poseLandmarks = null;
     LandmarkList poseWorldLandmarks = null;
     //ImageFrame segmentationMask = null;
     //NormalizedRect roiFromLandmarks = null;
@@ -99,15 +100,15 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
 
     if (runningMode == RunningMode.Sync)
     {
-      var _ = graphRunner.TryGetNext(out poseWorldLandmarks, out handWorldLandmarks, true);
+      var _ = graphRunner.TryGetNext(out poseWorldLandmarks, out poseLandmarks, out handWorldLandmarks, true);
     }
     else if (runningMode == RunningMode.NonBlockingSync)
     {
-      yield return new WaitUntil(() => graphRunner.TryGetNext(out poseWorldLandmarks, out handWorldLandmarks, false));
+      yield return new WaitUntil(() => graphRunner.TryGetNext(out poseWorldLandmarks, out poseLandmarks, out handWorldLandmarks, false));
     }
 
     //_poseDetectionAnnotationController.DrawNow(poseDetection);
-    //_poseLandmarksAnnotationController.DrawNow(poseLandmarks);
+    _poseLandmarksAnnotationController.DrawNow(poseLandmarks);
     _poseWorldLandmarksAnnotationController.DrawNow(poseWorldLandmarks);
     //_segmentationMaskAnnotationController.DrawNow(segmentationMask);
     //_roiFromLandmarksAnnotationController.DrawNow(roiFromLandmarks);
@@ -116,6 +117,11 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
   private void OnPoseWorldLandmarksOutput(object stream, OutputEventArgs<LandmarkList> eventArgs)
   {
     _poseWorldLandmarksAnnotationController.DrawLater(eventArgs.value);
+  }
+
+  private void OnPoseLandmarksOutput(object sender, OutputEventArgs<NormalizedLandmarkList> eventArgs)
+  {
+    _poseLandmarksAnnotationController.DrawLater(eventArgs.value);
   }
 
   private void OnHandWorldLandmarksOutput(object stream, OutputEventArgs<List<LandmarkList>> eventArgs)

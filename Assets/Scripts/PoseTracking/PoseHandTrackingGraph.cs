@@ -49,6 +49,12 @@ public class PoseHandTrackingGraph : GraphRunner
     remove => _poseWorldLandmarksStream.RemoveListener(value);
   }
 
+  public event EventHandler<OutputEventArgs<NormalizedLandmarkList>> OnPoseLandmarksOutput
+  {
+    add => _poseLandmarksStream.AddListener(value);
+    remove => _poseLandmarksStream.RemoveListener(value);
+  }
+
   public event EventHandler<OutputEventArgs<List<LandmarkList>>> OnHandWorldLandmarksOutput
   {
     add => _handWorldLandmarksStream.AddListener(value);
@@ -57,14 +63,14 @@ public class PoseHandTrackingGraph : GraphRunner
 
   private const string _InputStreamName = "input_video";
   //private const string _PoseDetectionStreamName = "pose_detection";
-  //private const string _PoseLandmarksStreamName = "pose_landmarks";
+  private const string _PoseLandmarksStreamName = "pose_landmarks";
   private const string _PoseWorldLandmarksStreamName = "pose_world_landmarks";
   //private const string _SegmentationMaskStreamName = "segmentation_mask";
   //private const string _RoiFromLandmarksStreamName = "roi_from_landmarks";
   private const string _HandWorldLandmarksStreamName = "hand_world_landmarks";
 
   //private OutputStream<DetectionPacket, Detection> _poseDetectionStream;
-  //private OutputStream<NormalizedLandmarkListPacket, NormalizedLandmarkList> _poseLandmarksStream;
+  private OutputStream<NormalizedLandmarkListPacket, NormalizedLandmarkList> _poseLandmarksStream;
   private OutputStream<LandmarkListPacket, LandmarkList> _poseWorldLandmarksStream;
   //private OutputStream<ImageFramePacket, ImageFrame> _segmentationMaskStream;
   //private OutputStream<NormalizedRectPacket, NormalizedRect> _roiFromLandmarksStream;
@@ -75,7 +81,7 @@ public class PoseHandTrackingGraph : GraphRunner
     if (runningMode.IsSynchronous())
     {
       //_poseDetectionStream.StartPolling().AssertOk();
-      //_poseLandmarksStream.StartPolling().AssertOk();
+      _poseLandmarksStream.StartPolling().AssertOk();
       _poseWorldLandmarksStream.StartPolling().AssertOk();
       //_segmentationMaskStream.StartPolling().AssertOk();
       //_roiFromLandmarksStream.StartPolling().AssertOk();
@@ -88,8 +94,8 @@ public class PoseHandTrackingGraph : GraphRunner
   {
     //_poseDetectionStream?.Close();
     //_poseDetectionStream = null;
-    //_poseLandmarksStream?.Close();
-    //_poseLandmarksStream = null;
+    _poseLandmarksStream?.Close();
+    _poseLandmarksStream = null;
     _poseWorldLandmarksStream?.Close();
     _poseWorldLandmarksStream = null;
     //_segmentationMaskStream?.Close();
@@ -106,18 +112,18 @@ public class PoseHandTrackingGraph : GraphRunner
     AddTextureFrameToInputStream(_InputStreamName, textureFrame);
   }
 
-  public bool TryGetNext(out LandmarkList poseWorldLandmarks,
+  public bool TryGetNext(out LandmarkList poseWorldLandmarks, out NormalizedLandmarkList poseLandmarks,
                            out List<LandmarkList> handWorldLandmarks, bool allowBlock = true)
   {
     var currentTimestampMicrosec = GetCurrentTimestampMicrosec();
     //var r1 = TryGetNext(_poseDetectionStream, out poseDetection, allowBlock, currentTimestampMicrosec);
-    //var r2 = TryGetNext(_poseLandmarksStream, out poseLandmarks, allowBlock, currentTimestampMicrosec);
+    var r2 = TryGetNext(_poseLandmarksStream, out poseLandmarks, allowBlock, currentTimestampMicrosec);
     var r3 = TryGetNext(_poseWorldLandmarksStream, out poseWorldLandmarks, allowBlock, currentTimestampMicrosec);
     //var r4 = TryGetNext(_segmentationMaskStream, out segmentationMask, allowBlock, currentTimestampMicrosec);
     //var r5 = TryGetNext(_roiFromLandmarksStream, out roiFromLandmarks, allowBlock, currentTimestampMicrosec);
     var r6 = TryGetNext(_handWorldLandmarksStream, out handWorldLandmarks, allowBlock, currentTimestampMicrosec);
 
-    return r3 || r6;
+    return r2 || r3 || r6;
   }
 
   protected override IList<WaitForResult> RequestDependentAssets()
@@ -137,8 +143,8 @@ public class PoseHandTrackingGraph : GraphRunner
     {
       //_poseDetectionStream = new OutputStream<DetectionPacket, Detection>(
       //    calculatorGraph, _PoseDetectionStreamName, config.AddPacketPresenceCalculator(_PoseDetectionStreamName), timeoutMicrosec);
-      //_poseLandmarksStream = new OutputStream<NormalizedLandmarkListPacket, NormalizedLandmarkList>(
-      //    calculatorGraph, _PoseLandmarksStreamName, config.AddPacketPresenceCalculator(_PoseLandmarksStreamName), timeoutMicrosec);
+      _poseLandmarksStream = new OutputStream<NormalizedLandmarkListPacket, NormalizedLandmarkList>(
+          calculatorGraph, _PoseLandmarksStreamName, config.AddPacketPresenceCalculator(_PoseLandmarksStreamName), timeoutMicrosec);
       _poseWorldLandmarksStream = new OutputStream<LandmarkListPacket, LandmarkList>(
           calculatorGraph, _PoseWorldLandmarksStreamName, config.AddPacketPresenceCalculator(_PoseWorldLandmarksStreamName), timeoutMicrosec);
       //_segmentationMaskStream = new OutputStream<ImageFramePacket, ImageFrame>(
@@ -151,7 +157,7 @@ public class PoseHandTrackingGraph : GraphRunner
     else
     {
       //_poseDetectionStream = new OutputStream<DetectionPacket, Detection>(calculatorGraph, _PoseDetectionStreamName, true, timeoutMicrosec);
-      //_poseLandmarksStream = new OutputStream<NormalizedLandmarkListPacket, NormalizedLandmarkList>(calculatorGraph, _PoseLandmarksStreamName, true, timeoutMicrosec);
+      _poseLandmarksStream = new OutputStream<NormalizedLandmarkListPacket, NormalizedLandmarkList>(calculatorGraph, _PoseLandmarksStreamName, true, timeoutMicrosec);
       _poseWorldLandmarksStream = new OutputStream<LandmarkListPacket, LandmarkList>(calculatorGraph, _PoseWorldLandmarksStreamName, true, timeoutMicrosec);
       //_segmentationMaskStream = new OutputStream<ImageFramePacket, ImageFrame>(calculatorGraph, _SegmentationMaskStreamName, true, timeoutMicrosec);
       //_roiFromLandmarksStream = new OutputStream<NormalizedRectPacket, NormalizedRect>(calculatorGraph, _RoiFromLandmarksStreamName, true, timeoutMicrosec);

@@ -554,6 +554,7 @@ MonoBehaviour:
   textureFramePool: {fileID: 275874970}
   runningMode: 0
   _poseWorldLandmarksAnnotationController: {fileID: 1936307555}
+  _poseLandmarksAnnotationController: {fileID: 1889892131}
 --- !u!1 &298505179
 GameObject:
   m_ObjectHideFlags: 0
