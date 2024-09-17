@@ -625,7 +625,7 @@ MonoBehaviour:
   graphRunner: {fileID: 275874975}
   textureFramePool: {fileID: 275874970}
   runningMode: 0
-  _poseWorldLandmarksAnnotationController: {fileID: 1936307555}
+  _poseWorldLandmarksAdapterController: {fileID: 1936307558}
   _poseLandmarksAnnotationController: {fileID: 1889892131}
   _handLandmarksAnnotationController: {fileID: 1889892136}
 --- !u!1 &298505179
@@ -2900,6 +2900,8 @@ GameObject:
   - component: {fileID: 1936307554}
   - component: {fileID: 1936307555}
   - component: {fileID: 1936307556}
+  - component: {fileID: 1936307558}
+  - component: {fileID: 1936307557}
   m_Layer: 0
   m_Name: Annotation Area
   m_TagString: Untagged
@@ -2962,6 +2964,32 @@ MonoBehaviour:
   rightArm: {fileID: 784398833}
   rightForeArm: {fileID: 520265659}
   IsEnable: 1
+--- !u!114 &1936307557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936307553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d26b7819fe797439ea642ea79854fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dollPoseRepeater: {fileID: 1936307556}
+--- !u!114 &1936307558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936307553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae7f679a07521db4da9a6de044d819eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  annotation: {fileID: 1936307557}
 --- !u!1 &1960727773
 GameObject:
   m_ObjectHideFlags: 0

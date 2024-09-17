@@ -10,7 +10,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
   //[SerializeField] private RectTransform _worldAnnotationArea;
   //[SerializeField] private DetectionAnnotationController _poseDetectionAnnotationController;
   //[SerializeField] private PoseLandmarkListAnnotationController _poseLandmarksAnnotationController;
-  [SerializeField] private PoseWorldLandmarkListAnnotationController _poseWorldLandmarksAnnotationController;
+  [SerializeField] private PoseWorldLandmarksAdapterController _poseWorldLandmarksAdapterController;
   //[SerializeField] private MaskAnnotationController _segmentationMaskAnnotationController;
   //[SerializeField] private NormalizedRectAnnotationController _roiFromLandmarksAnnotationController;
   [SerializeField] private PoseLandmarkListAnnotationController _poseLandmarksAnnotationController;
@@ -81,7 +81,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     var imageSource = ImageSourceProvider.ImageSource;
     //SetupAnnotationController(_poseDetectionAnnotationController, imageSource);
     SetupAnnotationController(_poseLandmarksAnnotationController, imageSource);
-    SetupAnnotationController(_poseWorldLandmarksAnnotationController, imageSource);
+    SetupAnnotationController(_poseWorldLandmarksAdapterController, imageSource);
     //SetupAnnotationController(_segmentationMaskAnnotationController, imageSource);
     //_segmentationMaskAnnotationController.InitScreen(imageSource.textureWidth, imageSource.textureHeight);
     //SetupAnnotationController(_roiFromLandmarksAnnotationController, imageSource);
@@ -118,7 +118,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
 
     //_poseDetectionAnnotationController.DrawNow(poseDetection);
     _poseLandmarksAnnotationController.DrawNow(poseLandmarks);
-    _poseWorldLandmarksAnnotationController.DrawNow(poseWorldLandmarks);
+    _poseWorldLandmarksAdapterController.DrawNow(poseWorldLandmarks);
     //_segmentationMaskAnnotationController.DrawNow(segmentationMask);
     //_roiFromLandmarksAnnotationController.DrawNow(roiFromLandmarks);
     _handLandmarksAnnotationController.DrawNow(handLandmarks, handedness);
@@ -126,7 +126,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
 
   private void OnPoseWorldLandmarksOutput(object stream, OutputEventArgs<LandmarkList> eventArgs)
   {
-    _poseWorldLandmarksAnnotationController.DrawLater(eventArgs.value);
+    _poseWorldLandmarksAdapterController.DrawLater(eventArgs.value);
   }
 
   private void OnPoseLandmarksOutput(object sender, OutputEventArgs<NormalizedLandmarkList> eventArgs)
