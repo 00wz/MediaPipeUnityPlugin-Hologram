@@ -22,6 +22,11 @@ public class DollPoseRepeater : MonoBehaviour
     //RepeatHandsPositions();
   }
 
+  public void HandleHands(List<LandmarkList> targets)
+  {
+
+  }
+
   private void RepeatHandsPositions()
   {
     if (targets == null)

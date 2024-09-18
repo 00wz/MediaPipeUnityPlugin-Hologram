@@ -265,7 +265,7 @@ public class PoseHandTrackingGraph : GraphRunner
     var sidePacket = new SidePacket();
 
     SetImageTransformationOptions(sidePacket, imageSource);
-    SetInputHorizontallyFlippedInvers(sidePacket, imageSource);
+    //SetInputHorizontallyFlippedInvers(sidePacket, imageSource);
 
     sidePacket.Emplace("model_complexity", new IntPacket((int)modelComplexity));
     sidePacket.Emplace("smooth_landmarks", new BoolPacket(smoothLandmarks));
@@ -281,7 +281,7 @@ public class PoseHandTrackingGraph : GraphRunner
 
     return sidePacket;
   }
-
+  /*
   private void SetInputHorizontallyFlippedInvers(SidePacket sidePacket, ImageSource imageSource, bool expectedToBeMirrored = false)
   {
     var isInverted = Mediapipe.Unity.CoordinateSystem.ImageCoordinate.IsInverted(rotation);
@@ -294,7 +294,8 @@ public class PoseHandTrackingGraph : GraphRunner
       inputHorizontallyFlipped = !inputHorizontallyFlipped;
     }
 
-    sidePacket.Emplace("input_horizontally_flipped_invers", new BoolPacket(!inputHorizontallyFlipped));
+    sidePacket.Emplace("input_horizontally_flipped_invers", new BoolPacket(inputHorizontallyFlipped));
     Mediapipe.Unity.Logger.LogDebug($"input_horizontally_flipped_invers = {inputHorizontallyFlipped}");
   }
+  */
 }

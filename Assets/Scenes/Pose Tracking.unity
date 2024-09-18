@@ -628,6 +628,7 @@ MonoBehaviour:
   _poseWorldLandmarksAdapterController: {fileID: 1936307558}
   _poseLandmarksAnnotationController: {fileID: 1889892131}
   _handLandmarksAnnotationController: {fileID: 1889892136}
+  _handWorldLandmarksAdapterController: {fileID: 1936307560}
 --- !u!1 &298505179
 GameObject:
   m_ObjectHideFlags: 0
@@ -2460,18 +2461,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1737185253}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1737185255 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1915238444563462421, guid: 4418f6a92856c5b51b58a36e3be7ed5c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1737185253}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39bac9dd52c31ae7aa01a7383bc44853, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1773909712
 GameObject:
   m_ObjectHideFlags: 0
@@ -2898,10 +2887,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1936307554}
-  - component: {fileID: 1936307555}
   - component: {fileID: 1936307556}
   - component: {fileID: 1936307558}
   - component: {fileID: 1936307557}
+  - component: {fileID: 1936307560}
+  - component: {fileID: 1936307559}
   m_Layer: 0
   m_Name: Annotation Area
   m_TagString: Untagged
@@ -2930,23 +2920,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1936307555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1936307553}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f152430ce9da8f9f2ae5cfd135b4d061, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  annotation: {fileID: 1737185255}
-  _hipHeightMeter: 0.9
-  _scale: {x: 50, y: 50, z: 50}
-  _visualizeZ: 1
-  _dollPoseRepeater: {fileID: 1936307556}
 --- !u!114 &1936307556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2990,6 +2963,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   annotation: {fileID: 1936307557}
+--- !u!114 &1936307559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936307553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd569c004833f7b4b829c5d1a769ca57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dollPoseRepeater: {fileID: 1936307556}
+--- !u!114 &1936307560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936307553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd076976eeeff94f8e7525f4d7c805b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  annotation: {fileID: 1936307559}
 --- !u!1 &1960727773
 GameObject:
   m_ObjectHideFlags: 0
