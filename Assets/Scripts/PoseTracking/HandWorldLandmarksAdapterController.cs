@@ -3,25 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mediapipe;
 using Mediapipe.Unity;
+using System;
 
 public class HandWorldLandmarksAdapterController : AnnotationController<HandWorldLandmarksAdapter>
 {
-  private List<LandmarkList> _currentTarget;
+  private List<LandmarkList> _currentHandWorldLandmarks;
+  private IList<ClassificationList> _currentHandedness;
 
-  public void DrawNow(List<LandmarkList> target)
+  public void DrawNow(List<LandmarkList> target, List<ClassificationList> handedness)
   {
-    _currentTarget = target;
+    _currentHandWorldLandmarks = target;
+    _currentHandedness = handedness;
     SyncNow();
   }
 
   public void DrawLater(List<LandmarkList> target)
   {
-    UpdateCurrentTarget(target, ref _currentTarget);
+    UpdateCurrentTarget(target, ref _currentHandWorldLandmarks);
+  }
+
+  internal void DrawLater(List<ClassificationList> handedness)
+  {
+    UpdateCurrentTarget(handedness, ref _currentHandedness);
   }
 
   protected override void SyncNow()
   {
     isStale = false;
-    annotation.HandleHands(_currentTarget);
+    annotation.HandleHands(_currentHandWorldLandmarks, _currentHandedness);
   }
 }

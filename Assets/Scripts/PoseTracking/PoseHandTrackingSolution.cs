@@ -88,7 +88,7 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
     _poseLandmarksAnnotationController.DrawNow(poseLandmarks);
     _poseWorldLandmarksAdapterController.DrawNow(poseWorldLandmarks);
     _handLandmarksAnnotationController.DrawNow(handLandmarks, handedness);
-    _handWorldLandmarksAdapterController.DrawNow(handWorldLandmarks);
+    _handWorldLandmarksAdapterController.DrawNow(handWorldLandmarks, handedness);
   }
 
   private void OnPoseWorldLandmarksOutput(object stream, OutputEventArgs<LandmarkList> eventArgs)
@@ -114,5 +114,6 @@ public class PoseHandTrackingSolution : ImageSourceSolution<PoseHandTrackingGrap
   private void OnHandednessOutput(object sender, OutputEventArgs<List<ClassificationList>> eventArgs)
   {
     _handLandmarksAnnotationController.DrawLater(eventArgs.value);
+    _handWorldLandmarksAdapterController.DrawLater(eventArgs.value);
   }
 }

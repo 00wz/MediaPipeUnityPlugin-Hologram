@@ -7,8 +7,8 @@ public class HandWorldLandmarksAdapter : HierarchicalAnnotation
 {
   [SerializeField] private DollPoseRepeater dollPoseRepeater;
 
-  public void HandleHands(List<LandmarkList> targets)
+  public void HandleHands(List<LandmarkList> targets, IList<ClassificationList> handedness)
   {
-    dollPoseRepeater.HandleHands(targets);
+    dollPoseRepeater.HandleHands(targets, handedness);
   }
 }

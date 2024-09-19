@@ -16,6 +16,8 @@ public class DollPoseRepeater : MonoBehaviour
 
   private IList<Landmark> _poseLandmarks;
   private List<LandmarkList> _handsLandmarks;
+  private LandmarkList _rightHand;
+  private LandmarkList _leftHand;
 
   public void HandlePose(IList<Landmark> targets)
   {
@@ -23,7 +25,7 @@ public class DollPoseRepeater : MonoBehaviour
     //RepeatHandsPositions();
   }
 
-  public void HandleHands(List<LandmarkList> targets)
+  public void HandleHands(List<LandmarkList> targets, IList<ClassificationList> handedness)
   {
     _handsLandmarks = targets;
     if(targets == null)
@@ -33,20 +35,42 @@ public class DollPoseRepeater : MonoBehaviour
     for (int i = 0; i < targets.Count; i++)
     {
       var handLandmarks = targets[i].Landmark;
-      Debug.DrawLine(handLandmarks[0].ToVector(), handLandmarks[1].ToVector());
-      Debug.DrawLine(handLandmarks[1].ToVector(), handLandmarks[2].ToVector());
-      Debug.DrawLine(handLandmarks[2].ToVector(), handLandmarks[3].ToVector());
-      Debug.DrawLine(handLandmarks[3].ToVector(), handLandmarks[4].ToVector());
 
-      Debug.DrawLine(handLandmarks[0].ToVector(), handLandmarks[5].ToVector());
-      Debug.DrawLine(handLandmarks[0].ToVector(), handLandmarks[17].ToVector());
-      Debug.DrawLine(handLandmarks[5].ToVector(), handLandmarks[9].ToVector());
-      Debug.DrawLine(handLandmarks[9].ToVector(), handLandmarks[13].ToVector());
-      Debug.DrawLine(handLandmarks[13].ToVector(), handLandmarks[17].ToVector());
+      UnityEngine.Color debugColor = UnityEngine.Color.black;
+      if(handedness != null && i < handedness.Count)
+      {
+        if(handedness[i].Classification[0].Label == "Left")
+        {
+          debugColor = UnityEngine.Color.blue;
+        }
+        else if(handedness[i].Classification[0].Label == "Right")
+        {
+          debugColor = UnityEngine.Color.green;
+        }
+        else
+        {
+          debugColor = UnityEngine.Color.red;
+          Debug.LogWarning("Unknown Label");
+        }
+      }
+      else
+      {
+        Debug.LogWarning("handedness.Count < handsLandmarks.Count");
+      }
+      Debug.DrawLine(handLandmarks[0].ToVector(), handLandmarks[1].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[1].ToVector(), handLandmarks[2].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[2].ToVector(), handLandmarks[3].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[3].ToVector(), handLandmarks[4].ToVector(), debugColor);
 
-      Debug.DrawLine(handLandmarks[5].ToVector(), handLandmarks[6].ToVector());
-      Debug.DrawLine(handLandmarks[6].ToVector(), handLandmarks[7].ToVector());
-      Debug.DrawLine(handLandmarks[7].ToVector(), handLandmarks[8].ToVector());
+      Debug.DrawLine(handLandmarks[0].ToVector(), handLandmarks[5].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[0].ToVector(), handLandmarks[17].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[5].ToVector(), handLandmarks[9].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[9].ToVector(), handLandmarks[13].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[13].ToVector(), handLandmarks[17].ToVector(), debugColor);
+
+      Debug.DrawLine(handLandmarks[5].ToVector(), handLandmarks[6].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[6].ToVector(), handLandmarks[7].ToVector(), debugColor);
+      Debug.DrawLine(handLandmarks[7].ToVector(), handLandmarks[8].ToVector(), debugColor);
     }
   }
 
