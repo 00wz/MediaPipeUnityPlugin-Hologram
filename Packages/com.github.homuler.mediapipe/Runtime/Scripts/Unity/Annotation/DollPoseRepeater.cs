@@ -9,6 +9,7 @@ public class DollPoseRepeater : MonoBehaviour
 {
   [SerializeField] private Transform leftArm;
   [SerializeField] private Transform leftForeArm;
+  [SerializeField] private Transform leftHand;
 
   [SerializeField] private Transform rightArm;
   [SerializeField] private Transform rightForeArm;
@@ -79,17 +80,17 @@ public class DollPoseRepeater : MonoBehaviour
 
   private void RepeatHandsPositions()
   {
-    
+    /*
     if (_poseLandmarks == null)
     {
       return;
     }
-    
+    */
     if (!IsEnable)
     {
       return;
     }
-    /*
+    
     //left
     if(_poseLandmarks != null)
     {
@@ -98,11 +99,13 @@ public class DollPoseRepeater : MonoBehaviour
       Vector3 leftArmDownDir = Vector3.Cross(leftForeArmDir, leftArmDir);
 
       leftArm.rotation = Quaternion.LookRotation(leftArmDownDir, leftArmDir);
+      //leftArm.rotation = Utils.UpForwardLookRotation(leftArmDir, leftArmDownDir);
 
       Vector3 leftHandThumbDir;// = _poseLandmarks[19].ToVector() - _poseLandmarks[17].ToVector();
       if(_leftHand != null)
       {
         leftHandThumbDir = _leftHand[5].ToVector() - _leftHand[17].ToVector();
+        //Debug.DrawLine(leftHand.position, leftHand.position + leftHandThumbDir*999f);
       }
       else
       {
@@ -111,23 +114,33 @@ public class DollPoseRepeater : MonoBehaviour
       Vector3 leftForeArmDownDir = Vector3.Cross(leftHandThumbDir, leftForeArmDir);
 
       leftForeArm.rotation = Quaternion.LookRotation(leftForeArmDownDir, leftForeArmDir);
+      //leftForeArm.rotation = Utils.UpForwardLookRotation(leftForeArmDir, leftForeArmDownDir);
     }
-    */
+
+    if(_leftHand != null)
+    {
+      Vector3 leftHandThumbDir = _leftHand[5].ToVector() - _leftHand[17].ToVector();
+      leftHand.rotation = Utils.RightForwardLookRotation(leftHandThumbDir, leftForeArm.forward);
+    }
+    
 
 
     //right
-    Vector3 rightArmDir = _poseLandmarks[14].ToVector() - _poseLandmarks[12].ToVector();
-    Vector3 rightForeArmDir = _poseLandmarks[16].ToVector() - _poseLandmarks[14].ToVector();
-    Vector3 rightArmDownDir = Vector3.Cross(rightArmDir, rightForeArmDir);
+    if(_poseLandmarks != null)
+    {
+      Vector3 rightArmDir = _poseLandmarks[14].ToVector() - _poseLandmarks[12].ToVector();
+      Vector3 rightForeArmDir = _poseLandmarks[16].ToVector() - _poseLandmarks[14].ToVector();
+      Vector3 rightArmDownDir = Vector3.Cross(rightArmDir, rightForeArmDir);
 
-    //rightArm.rotation = Quaternion.LookRotation(rightArmDownDir, rightArmDir);
-    rightArm.rotation = Utils.UpForwardLookRotation(rightArmDir, rightArmDownDir);
+      //rightArm.rotation = Quaternion.LookRotation(rightArmDownDir, rightArmDir);
+      rightArm.rotation = Utils.UpForwardLookRotation(rightArmDir, rightArmDownDir);
 
-    Vector3 rightHandThumbDir = _poseLandmarks[20].ToVector() - _poseLandmarks[18].ToVector();
-    Vector3 rightForeArmDownDir = Vector3.Cross(rightForeArmDir, rightHandThumbDir);
+      Vector3 rightHandThumbDir = _poseLandmarks[20].ToVector() - _poseLandmarks[18].ToVector();
+      Vector3 rightForeArmDownDir = Vector3.Cross(rightForeArmDir, rightHandThumbDir);
 
-    //rightForeArm.rotation = Quaternion.LookRotation(rightForeArmDownDir, rightForeArmDir);
-    rightForeArm.rotation = Utils.UpForwardLookRotation(rightForeArmDir, rightForeArmDownDir);
+      //rightForeArm.rotation = Quaternion.LookRotation(rightForeArmDownDir, rightForeArmDir);
+      rightForeArm.rotation = Utils.UpForwardLookRotation(rightForeArmDir, rightForeArmDownDir);
+    }
   }
 
   private void LateUpdate()

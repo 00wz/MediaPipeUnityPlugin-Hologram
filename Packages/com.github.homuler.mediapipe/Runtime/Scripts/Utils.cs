@@ -10,6 +10,13 @@ public static class Utils
   {
     return Quaternion.LookRotation(upward, forwards) * YZ_TO_ZY_ROTATE;
   }
+  
+  static readonly Quaternion XZ_TO_ZY_ROTATE =
+    Quaternion.Inverse(Quaternion.LookRotation(Vector3.right, Vector3.forward));
+  public static Quaternion RightForwardLookRotation(Vector3 right, Vector3 forwards)
+  {
+    return Quaternion.LookRotation(right, forwards) * XZ_TO_ZY_ROTATE;
+  }
 
   public static Quaternion OmniLookRotation(
                Vector3 exactAxis, Vector3 exactTarget,
