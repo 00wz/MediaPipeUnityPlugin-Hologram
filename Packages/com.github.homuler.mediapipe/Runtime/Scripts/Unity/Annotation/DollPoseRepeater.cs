@@ -7,10 +7,25 @@ using UnityEngine;
 
 public class DollPoseRepeater : MonoBehaviour
 {
+  [Header("left")]
   [SerializeField] private Transform leftArm;
   [SerializeField] private Transform leftForeArm;
   [SerializeField] private Transform leftHand;
+  [Space]
+  [SerializeField] private Transform leftHandIndex1;
+  [SerializeField] private Transform leftHandIndex2;
+  [SerializeField] private Transform leftHandIndex3;
+  [Space]
+  [SerializeField] private Transform leftHandMiddle1;
+  [SerializeField] private Transform leftHandMiddle2;
+  [SerializeField] private Transform leftHandMiddle3;
+  [Space]
+  [SerializeField] private Transform leftHandThumb1;
+  [SerializeField] private Transform leftHandThumb2;
+  [SerializeField] private Transform leftHandThumb3;
 
+  [Space]
+  [Header("right")]
   [SerializeField] private Transform rightArm;
   [SerializeField] private Transform rightForeArm;
 
@@ -80,12 +95,6 @@ public class DollPoseRepeater : MonoBehaviour
 
   private void RepeatHandsPositions()
   {
-    /*
-    if (_poseLandmarks == null)
-    {
-      return;
-    }
-    */
     if (!IsEnable)
     {
       return;
@@ -99,13 +108,11 @@ public class DollPoseRepeater : MonoBehaviour
       Vector3 leftArmDownDir = Vector3.Cross(leftForeArmDir, leftArmDir);
 
       leftArm.rotation = Quaternion.LookRotation(leftArmDownDir, leftArmDir);
-      //leftArm.rotation = Utils.UpForwardLookRotation(leftArmDir, leftArmDownDir);
 
       Vector3 leftHandThumbDir;// = _poseLandmarks[19].ToVector() - _poseLandmarks[17].ToVector();
       if(_leftHand != null)
       {
         leftHandThumbDir = _leftHand[5].ToVector() - _leftHand[17].ToVector();
-        //Debug.DrawLine(leftHand.position, leftHand.position + leftHandThumbDir*999f);
       }
       else
       {
@@ -114,13 +121,17 @@ public class DollPoseRepeater : MonoBehaviour
       Vector3 leftForeArmDownDir = Vector3.Cross(leftHandThumbDir, leftForeArmDir);
 
       leftForeArm.rotation = Quaternion.LookRotation(leftForeArmDownDir, leftForeArmDir);
-      //leftForeArm.rotation = Utils.UpForwardLookRotation(leftForeArmDir, leftForeArmDownDir);
     }
 
     if(_leftHand != null)
     {
       Vector3 leftHandThumbDir = _leftHand[5].ToVector() - _leftHand[17].ToVector();
-      leftHand.rotation = Utils.RightForwardLookRotation(leftHandThumbDir, leftForeArm.forward);
+      Vector3 leftHandForwardDir = _leftHand[9].ToVector() - _leftHand[0].ToVector();
+      leftHand.rotation = Utils.UpRightLookRotation(leftHandForwardDir, leftHandThumbDir);
+
+      RepeatFingerPosition(leftHandIndex1, leftHandIndex2, leftHandIndex3, 8, _leftHand);
+      RepeatFingerPosition(leftHandMiddle1, leftHandMiddle2, leftHandMiddle3, 12, _leftHand);
+      RepeatThumbPosition(leftHandThumb1, leftHandThumb2, leftHandThumb3, _leftHand);
     }
     
 
@@ -141,6 +152,35 @@ public class DollPoseRepeater : MonoBehaviour
       //rightForeArm.rotation = Quaternion.LookRotation(rightForeArmDownDir, rightForeArmDir);
       rightForeArm.rotation = Utils.UpForwardLookRotation(rightForeArmDir, rightForeArmDownDir);
     }
+  }
+
+  private void RepeatFingerPosition(Transform t1, Transform t2,
+    Transform t3, int lastLandmarkNum, RepeatedField<Landmark> hand)
+  {
+    Vector3 third = hand[lastLandmarkNum--].ToVector() - hand[lastLandmarkNum].ToVector();
+    Vector3 second = hand[lastLandmarkNum--].ToVector() - hand[lastLandmarkNum].ToVector();
+    Vector3 first = hand[lastLandmarkNum--].ToVector() - hand[lastLandmarkNum].ToVector();
+    Vector3 jointAxis = Vector3.Cross(first, third);
+
+    t1.rotation = Utils.UpRightLookRotation(first, jointAxis);
+    t2.rotation = Utils.UpRightLookRotation(second, jointAxis);
+    t3.rotation = Utils.UpRightLookRotation(third, jointAxis);
+  }
+
+  private void RepeatThumbPosition(Transform t1, Transform t2,
+    Transform t3, RepeatedField<Landmark> hand, bool isLeft = true)
+  {
+    int lastLandmarkNum = 4;
+    Vector3 third = hand[lastLandmarkNum--].ToVector() - hand[lastLandmarkNum].ToVector();
+    Vector3 second = hand[lastLandmarkNum--].ToVector() - hand[lastLandmarkNum].ToVector();
+    Vector3 first = hand[lastLandmarkNum--].ToVector() - hand[lastLandmarkNum].ToVector();
+    Vector3 jointAxis = Vector3.Cross(third,
+      hand[5].ToVector() - hand[17].ToVector()) * 
+      (isLeft? -1f : 1f);
+
+    t1.rotation = Utils.UpForwardLookRotation(first, jointAxis);
+    t2.rotation = Utils.UpForwardLookRotation(second, jointAxis);
+    t3.rotation = Utils.UpForwardLookRotation(third, jointAxis);
   }
 
   private void LateUpdate()

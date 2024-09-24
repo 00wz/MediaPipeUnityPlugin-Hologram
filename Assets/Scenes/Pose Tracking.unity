@@ -824,6 +824,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356817659}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &407780163 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 453036, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &419859954 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c,
@@ -836,9 +842,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ba3c50c2cb46dc9e916dd3a33c8a488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &461906949 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 410084, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &520265659 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 469134, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &626903056 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400286, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
     type: 3}
   m_PrefabInstance: {fileID: 1078844264}
   m_PrefabAsset: {fileID: 0}
@@ -936,6 +954,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &671173328 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 471662, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &700110991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,6 +1332,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1078844264}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &863471309 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 423536, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &865367042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,7 +1460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1067007476
 Transform:
   m_ObjectHideFlags: 0
@@ -2080,6 +2110,12 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 1
   m_ShadowAngle: 0
+--- !u!4 &1437886898 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 491886, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1514445398
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2305,6 +2341,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1737185253}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1761949677 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 472876, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1773909712
 GameObject:
   m_ObjectHideFlags: 0
@@ -2499,6 +2541,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1782549141}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1849761820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 483334, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1861420343 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 428524, guid: 5563b2c1cf35cae4f8490dfea2d2aa41,
+    type: 3}
+  m_PrefabInstance: {fileID: 1078844264}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1889892127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2727,6 +2781,15 @@ MonoBehaviour:
   leftArm: {fileID: 1256947143}
   leftForeArm: {fileID: 821538696}
   leftHand: {fileID: 825375189}
+  leftHandIndex1: {fileID: 461906949}
+  leftHandIndex2: {fileID: 1849761820}
+  leftHandIndex3: {fileID: 407780163}
+  leftHandMiddle1: {fileID: 1437886898}
+  leftHandMiddle2: {fileID: 1861420343}
+  leftHandMiddle3: {fileID: 671173328}
+  leftHandThumb1: {fileID: 626903056}
+  leftHandThumb2: {fileID: 863471309}
+  leftHandThumb3: {fileID: 1761949677}
   rightArm: {fileID: 784398833}
   rightForeArm: {fileID: 520265659}
   IsEnable: 1
