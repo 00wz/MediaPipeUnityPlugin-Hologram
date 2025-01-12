@@ -15,11 +15,13 @@ namespace HologramPipe
     private Transform CenterOfScreenPosition;
     [SerializeField]
     private Transform Camera;
+    [SerializeField]
+    private ExponentionalEyePositionSmoother smoother;
     //[SerializeField]
     //private Text DeltaRotText;
 
-    private Vector3 _lastValidEyePositionRelationProjectionPlane = Vector3.back * 200f;
-    private Quaternion _lastValidGyro = Quaternion.identity;
+    //private Vector3 _lastValidEyePositionRelationProjectionPlane = Vector3.back * 200f;
+    //private Quaternion _lastValidGyro = Quaternion.identity;
 
     private bool _gyroCorrectionActive = false;
     public void SetAccelerometerCorrection(bool active) => _gyroCorrectionActive = active;
@@ -43,6 +45,8 @@ namespace HologramPipe
       Input.gyro.enabled = true;
       _localFrontalCameraPosition = FrontCameraPosition.localPosition;
       CenterOfScreenToFrontCameraDistanceMM = 76f;
+
+      smoother.Init(Vector3.back * 200f, Quaternion.identity);
     }
 
     private void Update()
@@ -52,27 +56,32 @@ namespace HologramPipe
         Vector3 eyePositionRelationFrontCameraMM = (IrisTracker.IrisPositions.Value.LeftIrisPositionMM +
           IrisTracker.IrisPositions.Value.RightIrisPositionMM) * 0.5f;
 
-        _lastValidEyePositionRelationProjectionPlane =
+        var _lastValidEyePositionRelationProjectionPlane =
           Rotate180ByY(eyePositionRelationFrontCameraMM
           * _unitToMillimeterRatioProjectionPlaneLocal) + _localFrontalCameraPosition;
 
-        _lastValidGyro = IrisTracker.IrisPositions.Value.Attitude;
+        //_lastValidGyro = IrisTracker.IrisPositions.Value.Attitude;
+        smoother.SetLastEyesPositionRelativeProjectionPlane(
+          _lastValidEyePositionRelationProjectionPlane,
+          IrisTracker.IrisPositions.Value.Attitude);
       }
 
       if (_gyroCorrectionActive)
       {
         var currentGyro = Input.gyro.attitude;
-        Quaternion deltaRotate = QuaternionDiff(_lastValidGyro, currentGyro);
+        Quaternion deltaRotate = QuaternionDiff(
+          smoother.GyroscopeReadingCorrespondingEyesPosition,
+          currentGyro);
         //Vector3 virtualEyePositionRelationFrontCameraUnit =
         Camera.localPosition =
-          GyroToUnity(deltaRotate) * _lastValidEyePositionRelationProjectionPlane;
+          GyroToUnity(deltaRotate) * smoother.SmoothedEyesPositionRelationProjectionPlane;//_lastValidEyePositionRelationProjectionPlane;
 
         //Camera.position = FrontCameraPosition.TransformPoint(virtualEyePositionRelationFrontCameraUnit);
         //DeltaRotText.text = deltaRotate.eulerAngles.ToString();
       }
       else
       {
-        Camera.localPosition = _lastValidEyePositionRelationProjectionPlane;
+        Camera.localPosition = smoother.SmoothedEyesPositionRelationProjectionPlane;//_lastValidEyePositionRelationProjectionPlane;
         //Camera.position = FrontCameraPosition.TransformPoint(_lastValidEyePositionRelationProjectionPlane);
       }
     }
